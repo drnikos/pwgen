@@ -46,7 +46,6 @@ pub mod randomgen {
             panic!("Y/N?");
         };
 
-
         // CAPS
         println!("Include Capital letters? (y / n): ");
         let mut c: String = String::new();
@@ -129,7 +128,11 @@ pub mod randomgen {
             's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
         ];
 
-        if !passinfo.has_caps && !passinfo.has_letters && !passinfo.has_number && !passinfo.has_symbol {
+        if !passinfo.has_caps
+            && !passinfo.has_letters
+            && !passinfo.has_number
+            && !passinfo.has_symbol
+        {
             panic!("Can't generate password that doesn't include anything!");
         }
 
@@ -137,43 +140,51 @@ pub mod randomgen {
         loop {
             let gr = rng.gen_range(0..4);
             let charslen = abc.len();
-            
-            
+
             match gr {
                 0 => {
-                    if passinfo.has_letters {let alphar = rng.gen_range(0..charslen);
+                    if passinfo.has_letters {
+                        let alphar = rng.gen_range(0..charslen);
                         let letter = abc[alphar].to_ascii_lowercase().to_string();
                         pass.push(letter);
-                        loop_index += 1;} else {continue;}
-                    
+                        loop_index += 1;
+                    } else {
+                        continue;
+                    }
                 }
                 1 => {
                     if passinfo.has_caps {
-                    let alphar = rng.gen_range(0..charslen);
-                    let letter = abc[alphar].to_ascii_uppercase().to_string();
-                    pass.push(letter);
-                    loop_index += 1;
-                    } else {continue;}
+                        let alphar = rng.gen_range(0..charslen);
+                        let letter = abc[alphar].to_ascii_uppercase().to_string();
+                        pass.push(letter);
+                        loop_index += 1;
+                    } else {
+                        continue;
+                    }
                 }
                 2 => {
                     if passinfo.has_number {
                         let number = rng.gen_range(0..10).to_string();
                         pass.push(number);
-                        loop_index +=1;
-                    } else {continue;}
+                        loop_index += 1;
+                    } else {
+                        continue;
+                    }
                 }
                 3 => {
                     if passinfo.has_symbol {
                         let symbr = rng.gen_range(0..symbols.len());
                         let symbol = symbols[symbr].to_string();
                         pass.push(symbol);
-                        loop_index +=1;
-                    } else {continue;}
+                        loop_index += 1;
+                    } else {
+                        continue;
+                    }
                 }
                 _ => continue,
             }
 
-            if loop_index == passinfo.length  {
+            if loop_index == passinfo.length {
                 break;
             }
         }
