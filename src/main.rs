@@ -1,3 +1,6 @@
+mod randomgen;
+use randomgen::randomgen::{passgen, passinfo};
 fn main() {
-    println!("Hello, world!");
+    let x = passinfo();
+    println!("Your password is: {}", passgen(x));
 }
