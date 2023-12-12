@@ -1,4 +1,5 @@
 pub mod randomgen {
+    use std::process;
     use rand::Rng;
 
     pub struct Password {
@@ -9,102 +10,46 @@ pub mod randomgen {
         has_symbol: bool,
     }
 
+    fn user_input(prompt: &str) -> String {
+        println!("{}", prompt);
+        let mut input: String = String::new();
+        std::io::stdin().read_line(&mut input).unwrap();
+        input = input.trim().parse().expect("Error reading input");
+
+        input.trim().to_string()
+    }
+    fn yn(prompt: &str) -> bool {
+        loop {
+            let answer = user_input(&prompt).to_lowercase();
+            match answer.as_str() {
+                "y" => return true,
+                "n" => return false,
+                _ => println!("Please enter 'y' or 'n'."),
+            }
+        }
+    }
     pub fn passinfo() -> Password {
         //? PASSWORD LENGTH
-
-        println!("Password length:");
-        let mut l = String::new();
-        std::io::stdin().read_line(&mut l).unwrap();
-        l = l.trim().parse().expect("Enter a number");
-        let l = match l.parse::<i8>() {
-            Ok(num) => num,
-            Err(_) => {
-                eprintln!("Only numbers are allowed");
-                0
-            }
+        let l = loop {
+            let len = user_input("Password length: ");
+            match len.parse::<i8>() {
+                Ok(num) => {
+                    break num;
+                }
+                Err(_) => {
+                    println!("Please enter a positive number.");
+                    continue;
+                }
+            };
         };
+        
 
         //? PASSWORD ARGS
 
-        // LETTERS
-        println!("Include Small letters? (y / n): ");
-        let mut sl: String = String::new();
-        std::io::stdin().read_line(&mut sl).unwrap();
-        sl = sl.trim().parse().expect("Enter a char");
-        let sl = match sl.parse::<char>() {
-            Ok(char) => char,
-            Err(_) => {
-                eprintln!("Only characters are allowed");
-                panic!("Char");
-            }
-        };
-        let sl = if sl == 'y' {
-            true
-        } else if sl == 'n' {
-            false
-        } else {
-            panic!("Y/N?");
-        };
-
-        // CAPS
-        println!("Include Capital letters? (y / n): ");
-        let mut c: String = String::new();
-        std::io::stdin().read_line(&mut c).unwrap();
-        c = c.trim().parse().expect("Enter a char");
-        let c = match c.parse::<char>() {
-            Ok(char) => char,
-            Err(_) => {
-                eprintln!("Only characters are allowed");
-                panic!("Char");
-            }
-        };
-        let c = if c == 'y' {
-            true
-        } else if c == 'n' {
-            false
-        } else {
-            panic!("Y/N?");
-        };
-
-        // NUMS
-        println!("Include Numbers? (y / n): ");
-        let mut n: String = String::new();
-        std::io::stdin().read_line(&mut n).unwrap();
-        n = n.trim().parse().expect("Enter a char");
-        let n = match n.parse::<char>() {
-            Ok(char) => char,
-            Err(_) => {
-                eprintln!("Only numbers are allowed");
-                panic!("Char");
-            }
-        };
-        let n = if n == 'y' {
-            true
-        } else if n == 'n' {
-            false
-        } else {
-            panic!("Y/N?");
-        };
-
-        // SYMBOL
-        println!("Include Symbols? (y / n): ");
-        let mut s: String = String::new();
-        std::io::stdin().read_line(&mut s).unwrap();
-        s = s.trim().parse().expect("Enter a char");
-        let s = match s.parse::<char>() {
-            Ok(char) => char,
-            Err(_) => {
-                eprintln!("Only numbers are allowed");
-                panic!("Char");
-            }
-        };
-        let s = if s == 'y' {
-            true
-        } else if s == 'n' {
-            false
-        } else {
-            panic!("Y/N?");
-        };
+        let sl = yn("Include Small letters? (y / n): ");
+        let c = yn("Include Capital letters? (y / n): ");
+        let n = yn("Include Numbers? (y / n): ");
+        let s = yn("Include Symbols? (y / n): ");
 
         Password {
             length: l,
@@ -133,7 +78,8 @@ pub mod randomgen {
             && !passinfo.has_number
             && !passinfo.has_symbol
         {
-            panic!("Can't generate password that doesn't include anything!");
+            eprintln!("Can't generate password that doesn't include anything!");
+            process::exit(1);
         }
 
         let mut loop_index = 0;
@@ -148,8 +94,6 @@ pub mod randomgen {
                         let letter = abc[alphar].to_ascii_lowercase().to_string();
                         pass.push(letter);
                         loop_index += 1;
-                    } else {
-                        continue;
                     }
                 }
                 1 => {
@@ -158,8 +102,6 @@ pub mod randomgen {
                         let letter = abc[alphar].to_ascii_uppercase().to_string();
                         pass.push(letter);
                         loop_index += 1;
-                    } else {
-                        continue;
                     }
                 }
                 2 => {
@@ -167,8 +109,6 @@ pub mod randomgen {
                         let number = rng.gen_range(0..10).to_string();
                         pass.push(number);
                         loop_index += 1;
-                    } else {
-                        continue;
                     }
                 }
                 3 => {
@@ -177,8 +117,6 @@ pub mod randomgen {
                         let symbol = symbols[symbr].to_string();
                         pass.push(symbol);
                         loop_index += 1;
-                    } else {
-                        continue;
                     }
                 }
                 _ => continue,
