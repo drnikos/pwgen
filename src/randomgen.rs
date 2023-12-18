@@ -1,13 +1,13 @@
 pub mod randomgen {
-    use std::process;
     use rand::Rng;
+    use std::process;
 
     pub struct Password {
-        length: i8,
-        has_letters: bool,
-        has_caps: bool,
-        has_number: bool,
-        has_symbol: bool,
+        pub length: i64,
+        pub has_letters: bool,
+        pub has_caps: bool,
+        pub has_number: bool,
+        pub has_symbol: bool,
     }
 
     fn user_input(prompt: &str) -> String {
@@ -32,17 +32,16 @@ pub mod randomgen {
         //? PASSWORD LENGTH
         let l = loop {
             let len = user_input("Password length: ");
-            match len.parse::<i8>() {
+            match len.parse::<i64>() {
                 Ok(num) => {
                     break num;
                 }
                 Err(_) => {
-                    println!("Please enter a positive number.");
+                    println!("Please enter a positive integer.");
                     continue;
                 }
             };
         };
-        
 
         //? PASSWORD ARGS
 
