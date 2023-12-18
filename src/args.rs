@@ -1,7 +1,7 @@
 pub mod args {
     use super::super::randomgen::randomgen;
-
     use clap::Parser;
+    use std::process;
 
     #[derive(Parser)]
     #[command(
@@ -31,15 +31,22 @@ pub mod args {
         let arguments = Arguments::parse();
         let len = match arguments.length {
             Some(len) => len,
-            None => panic!("Invalid length"),
+            None => {
+                eprintln!("Invalid length");
+                process::exit(1)
+            }
         };
-        if len >0 
+
+        if len > 0
             && !arguments.include_caps
             && !arguments.include_numbers
             && !arguments.include_symbols
+            && !arguments.include_letters
         {
-            panic!("Cannot generate password that does not contain any type of characters");
+            eprintln!("Cannot generate password that does not contain any type of characters");
+            process::exit(1)
         }
+
         randomgen::Password {
             length: len,
             has_letters: arguments.include_letters,
