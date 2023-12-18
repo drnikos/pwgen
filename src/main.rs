@@ -13,7 +13,7 @@ fn main() {
         || arguments.include_symbols
         || arguments.include_letters
     {
-        if let Some(_) = arguments.length {
+        if arguments.length.is_some() {
             let password = parseargs();
             println!("Your password is: \x1b[93m{}\x1b[0m", passgen(password));
         } else {
