@@ -34,6 +34,10 @@ pub mod randomgen {
             let len = user_input("Password length: ");
             match len.parse::<i64>() {
                 Ok(num) => {
+                    if num <= 0 {
+                        eprintln!("The length of the password cannot be 0");
+                        process::exit(1);
+                    }
                     break num;
                 }
                 Err(_) => {

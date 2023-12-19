@@ -30,7 +30,14 @@ pub mod args {
     pub fn parseargs() -> randomgen::Password {
         let arguments = Arguments::parse();
         let len = match arguments.length {
-            Some(len) => len,
+            Some(len) => {
+                if len <= 0 {
+                    eprintln!("The length of the password cannot be 0");
+                    process::exit(1);
+                }
+                len
+            },
+            
             None => {
                 eprintln!("Invalid length");
                 process::exit(1)
