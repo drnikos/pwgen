@@ -35,7 +35,7 @@ pub mod randomgen {
             match len.parse::<i64>() {
                 Ok(num) => {
                     if num <= 0 {
-                        println!("The length of the password cannot be 0");
+                        println!("The length of the password cannot be 0 or negative");
                         continue;
                     }
                     break num;
