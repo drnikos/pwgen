@@ -20,10 +20,10 @@ pub mod args {
         #[arg(short = 'c', long = "caps")]
         pub include_caps: bool,
         /// Include Numbers
-        #[arg(short = 'n', long = "number")]
+        #[arg(short = 'n', long = "numbers")]
         pub include_numbers: bool,
         // Include Symbols
-        #[arg(short = 's', long = "symbol")]
+        #[arg(short = 's', long = "symbols")]
         pub include_symbols: bool,
     }
 
