@@ -22,7 +22,7 @@ pub mod args {
         /// Include Numbers
         #[arg(short = 'n', long = "numbers")]
         pub include_numbers: bool,
-        // Include Symbols
+        /// Include Symbols
         #[arg(short = 's', long = "symbols")]
         pub include_symbols: bool,
     }
