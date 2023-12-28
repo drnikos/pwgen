@@ -1,7 +1,10 @@
 # PWGEN 
 <p> A simple Password Generator tool written in Rust.
 
+**CURRENTLY, ONLY LINUX IS SUPPORTED!**
+
 ## Usage
+**Make sure pwgen is excecutable by running:** ```chmod +x pwgen``` **in the directory the file is located**
 <p> The program can be run either by passing arguments or by excecuting it directly
 
 #### Direct Excecution
