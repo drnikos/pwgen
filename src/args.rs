@@ -29,7 +29,7 @@ pub mod args {
         pub include_symbols: bool,
         /// Save generated output to a file
         #[arg(short = 'f', long = "file")]
-        pub save_file: String,
+        pub save_file: Option<String>,
         /// Do not print the generated password
         #[arg(long = "hide")]
         pub hide: bool,
@@ -71,23 +71,28 @@ pub mod args {
         }
     }
 
-    pub fn save_pass(output: &String, path: String) {
-        let sfile = OpenOptions::new()
-            .append(true)
-            .write(true)
-            .create(true)
-            .open(path);
-        match sfile {
-            Ok(mut file) => {
-                if let Err(err) = writeln!(file, "{}", output) {
-                    eprintln!("Error writing to file: {}", err);
-                    process::exit(1);
+    pub fn save_pass(output: &String, path: Option<String>) {
+        match path {
+            Some(path) => {
+                let sfile = OpenOptions::new()
+                    .append(true)
+                    .write(true)
+                    .create(true)
+                    .open(path);
+                match sfile {
+                    Ok(mut file) => {
+                        if let Err(err) = writeln!(file, "{}", output) {
+                            eprintln!("Error writing to file: {}", err);
+                            process::exit(1);
+                        }
+                    }
+                    Err(e) => {
+                        eprintln!("Error opening file: {}", e);
+                        process::exit(1);
+                    }
                 }
             }
-            Err(e) => {
-                eprintln!("Error opening file: {}", e);
-                process::exit(1);
-            }
+            None => {}
         }
     }
 }
