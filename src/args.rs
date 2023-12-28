@@ -30,7 +30,7 @@ pub mod args {
         /// Save generated output to a file
         #[arg(short = 'f', long = "file")]
         pub save_file: Option<String>,
-        /// Do not print the generated password
+        /// Do not print the generated password (use only when saving to a file)
         #[arg(long = "hide")]
         pub hide: bool,
     }
