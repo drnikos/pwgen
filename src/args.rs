@@ -1,6 +1,8 @@
 pub mod args {
     use super::super::randomgen::randomgen;
     use clap::Parser;
+    use std::fs::OpenOptions;
+    use std::io::Write;
     use std::process;
 
     #[derive(Parser)]
@@ -25,6 +27,12 @@ pub mod args {
         /// Include Symbols
         #[arg(short = 's', long = "symbols")]
         pub include_symbols: bool,
+        /// Save generated output to a file
+        #[arg(short = 'f', long = "file")]
+        pub save_file: String,
+        /// Do not print the generated password
+        #[arg(long = "hide")]
+        pub hide: bool,
     }
 
     pub fn parseargs() -> randomgen::Password {
@@ -32,12 +40,12 @@ pub mod args {
         let len = match arguments.length {
             Some(len) => {
                 if len <= 0 {
-                    eprintln!("The length of the password cannot be 0");
+                    eprintln!("The length of the password must be a positive integer");
                     process::exit(1);
                 }
                 len
-            },
-            
+            }
+
             None => {
                 eprintln!("Invalid length");
                 process::exit(1)
@@ -60,6 +68,26 @@ pub mod args {
             has_caps: arguments.include_caps,
             has_number: arguments.include_numbers,
             has_symbol: arguments.include_symbols,
+        }
+    }
+
+    pub fn save_pass(output: &String, path: String) {
+        let sfile = OpenOptions::new()
+            .append(true)
+            .write(true)
+            .create(true)
+            .open(path);
+        match sfile {
+            Ok(mut file) => {
+                if let Err(err) = writeln!(file, "{}", output) {
+                    eprintln!("Error writing to file: {}", err);
+                    process::exit(1);
+                }
+            }
+            Err(e) => {
+                eprintln!("Error opening file: {}", e);
+                process::exit(1);
+            }
         }
     }
 }
