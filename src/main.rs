@@ -24,6 +24,7 @@ fn main() {
             eprintln!("Cannot generate password if the length is not provided");
             process::exit(1);
         }
+        process::exit(0);
     } else if arguments.length.is_some()
         && !arguments.include_caps
         && !arguments.include_numbers
