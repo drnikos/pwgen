@@ -32,8 +32,7 @@ fn main() {
     {
         eprintln!("Cannot generate password without any type of characters");
         process::exit(1);
-    } else {
-        let password = passinfo();
-        println!("Your password is: \x1b[93m{}\x1b[0m", passgen(password));
     }
+    let password = passinfo();
+    println!("Your password is: \x1b[93m{}\x1b[0m", passgen(password));
 }
