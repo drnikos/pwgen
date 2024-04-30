@@ -4,6 +4,9 @@ use crate::args::args::{parseargs, save_pass};
 use clap::Parser;
 use randomgen::randomgen::{passgen, passinfo};
 use std::process;
+use std::io;
+use std::io::prelude::*;
+
 
 fn main() {
     let arguments = args::args::Arguments::parse();
@@ -36,4 +39,16 @@ fn main() {
     }
     let password = passinfo();
     println!("Your password is: \x1b[93m{}\x1b[0m", passgen(password));
+
+    pause();
+}
+
+fn pause() {
+    let mut stdin = io::stdin();
+    let mut stdout = io::stdout();
+
+    write!(stdout, "\n\nPress any key to continue...").unwrap();
+    stdout.flush().unwrap();
+
+    let _ = stdin.read(&mut [0u8]).unwrap();
 }
